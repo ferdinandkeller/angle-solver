@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- head of the web page -->
+<head>
+  <!-- define some metas -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- import font from google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <!-- set styling -->
+  <style>
+    /* global styling */
+    :root {
+      font-size: 10px;
+      --inner-margin: 6rem;
+      --body-margin: 4rem;
+    }
+    * {
+      font-family: Jost, sans-serif;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6em;
+      word-spacing: .3em;
+      letter-spacing: .03em;
+      outline: 0;
+      border: 0;
+      user-select: none;
+    }
+    *::selection {
+      background-color: black;
+      color: white;
+    }
+
+    /* body styling */
+    body {
+      font-size: 1.5rem;
+    }
+    #content {
+      max-width: 1000px;
+      margin: auto;
+      padding: var(--inner-margin);
+    }
+
+    /* everything else */
+    h1 {
+      font-size: 6rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: var(--inner-margin);
+      line-height: 1;
+    }
+    .program-description {
+      margin-bottom: var(--body-margin);
+    }
+    .inputs {
+      width: 30em;
+      display: flex;
+      flex-direction: column;
+      margin: auto;
+    }
+    .input {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+    .input:not(:last-child) {
+      margin-bottom: .5em;
+    }
+    .input .description {
+      color: white;
+      background-color: black;
+      padding: .2em 1em;
+      width: 10em;
+      text-align: right;
+      text-transform: uppercase;
+      border-radius: 3px;
+      font-weight: 800;
+      margin-right: .5em;
+    }
+    .input input, .input .output {
+      border: solid 1px black;
+      flex-grow: 100;
+      padding: .2em .5em;
+      border-radius: 3px;
+      user-select: text;
+    }
+
+    #me {
+      position: absolute;
+      bottom: 1em;
+      right: 1.6em;
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+
+  <!-- set page's title -->
+  <title>Angle solver</title>
+</head>
+
+<!-- body of the web page -->
+<body>
+  <div id="content">
+    <h1>Angle solver</h1>
+    <p class="program-description">For this program to work, you just have to enter the appropriate values in the input fields. If the input isn't valid, the program won't find a solution and will give you a warning. The two radii can be any number, positive or negative. Theta must be an angle in degrees, ranging between 0° and 180° exclusive.</p>
+
+    <div class="inputs">
+      <div class="input">
+        <div class="description">radius 1</div>
+        <input id="r1" type="text">
+      </div>
+      <div class="input">
+        <div class="description">radius 2</div>
+        <input id="r2" type="text">
+      </div>
+      <div class="input">
+        <div class="description">theta</div>
+        <input id="theta" type="text">
+      </div>
+
+      <div id="results">
+        <div class="input">
+          <div class="description">RADIUS</div>
+          <div id="r" class="output"></div>
+        </div>
+        <div class="input">
+          <div class="description">PHI</div>
+          <div id="phi" class="output"></div>
+        </div>
+      </div>
+    </div>
+
+    <a id="me" href="https://github.com/ferdinandklr/">by Ferdinand Keller</a>
+  </div>
+</body>
+
+<!-- main script of the web page -->
+<script>
+  // define the input & output fields
+  let r1_input = document.getElementById('r1')
+  let r2_input = document.getElementById('r2')
+  let theta_input = document.getElementById('theta')
+  let r_output = document.getElementById('r')
+  let phi_output = document.getElementById('phi')
+
+  // define the function that shows impossible result
+  function impossible() {
+    // clear outputs
+    r_output.innerText = '🟥'
+    phi_output.innerText = '🟥'
+  }
+
+  // define the function that solves the problem
+  function solver() {// verify that there are inputs
+    if (r1_input.value === '' || r2_input.value === '' || theta_input.value === '') {
+      impossible()
+      return
+    }
+
+    // verify that the inputs are valid
+    if (isNaN(r1_input.value) || isNaN(r2_input.value) || isNaN(theta_input.value)) {
+      impossible()
+      return
+    }
+
+    // get the values from the input fields
+    r1 = parseFloat(r1_input.value)
+    r2 = parseFloat(r2_input.value)
+    theta = parseFloat(theta_input.value)
+
+    if (theta <= 0 || 180 <= theta) {
+      impossible()
+      return
+    }
+
+    // convert theta into radians
+    theta = theta * Math.PI / 180
+
+    // compute the solution
+    let h2 = (r2*Math.cos(theta) - r1)/Math.sin(theta)
+    let h1 = r2*Math.sin(theta) + h2*Math.cos(theta)
+
+    let r = Math.sqrt(r2*r2 + h2*h2)
+    let phi = Math.atan2(h1, r1)
+
+    // convert phi to degrees
+    phi = phi * 180 / Math.PI
+
+    // show the results on the screen
+    r_output.innerText = r
+    phi_output.innerText = phi
+  }
+
+  // register modify events
+  r1_input.addEventListener('input', solver)
+  r2_input.addEventListener('input', solver)
+  theta_input.addEventListener('input', solver)
+
+  // run the code by default
+  solver()
+</script>
+</html>
