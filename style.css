@@ -1,0 +1,84 @@
+/* global styling */
+:root {
+  font-size: 10px;
+  --inner-margin: 6rem;
+  --body-margin: 4rem;
+}
+* {
+  font-family: Jost, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6em;
+  word-spacing: .3em;
+  letter-spacing: .03em;
+  outline: 0;
+  border: 0;
+  user-select: none;
+}
+*::selection {
+  background-color: black;
+  color: white;
+}
+
+/* body styling */
+body {
+  font-size: 1.5rem;
+}
+#content {
+  max-width: 1000px;
+  margin: auto;
+  padding: var(--inner-margin);
+}
+
+/* everything else */
+h1 {
+  font-size: 6rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: var(--inner-margin);
+  line-height: 1;
+}
+.program-description {
+  margin-bottom: var(--body-margin);
+}
+.inputs {
+  width: 30em;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.input {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.input:not(:last-child) {
+  margin-bottom: .5em;
+}
+.input .description {
+  color: white;
+  background-color: black;
+  padding: .2em 1em;
+  width: 10em;
+  text-align: right;
+  text-transform: uppercase;
+  border-radius: 3px;
+  font-weight: 800;
+  margin-right: .5em;
+}
+.input input, .input .output {
+  border: solid 1px black;
+  flex-grow: 100;
+  padding: .2em .5em;
+  border-radius: 3px;
+  user-select: text;
+}
+
+#me {
+  position: absolute;
+  bottom: 1em;
+  right: 1.6em;
+  color: black;
+  text-decoration: none;
+}
